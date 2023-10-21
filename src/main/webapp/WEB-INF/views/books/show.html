@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en"  xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Book</title>
+</head>
+<body>
+<p th:text="${'Name: ' + book.get().title}"> Value</p>
+<p th:text="${'Author: ' + book.get().getAuthor()}"> Value</p>
+<p th:text="${'Date of writing: ' + book.get().writeYear}">Value</p>
+<p th:text="${'Id: ' + book.get().id}">VALUE</p>
+<br/>
+<div th:if="${owner}">
+    <span>Book owner: </span><span th:text="${owner.getFullName()} +' ID: '+ ${owner.getId()}">Person name and ID</span>
+    <br>
+    <form th:method="PUT" th:action="@{/books/{id}/release(id=${book.get().getId()})}">
+        <input type="submit" value="Release book"/>
+    </form>
+</div>
+
+<div th:if="${people}">
+    <span>Book is free. Choose the person to give it </span>
+    <form th:method="PUT" th:action="@{/books/{id}/assign(id=${book.get().getId()})}">
+        <label for="person">Select</label>
+        <br>
+        <select th:object="${person}" th:field="*{id}" id="person">
+            <option th:each="person : ${people}" th:value="${person.id}" th:text="${person.getFullName()}">
+            </option>
+        </select>
+        <br/>
+        <input type="submit" value="Set">
+    </form>
+    <br>
+</div>
+
+<form th:method="GET" th:action="@{/books/{id}/edit(id=${book.get().getId()})}">
+    <input type="submit" value="Edit"/>
+</form>
+<br>
+<form th:method="DELETE" th:action="@{/books/{id}(id=${book.get().getId()})}">
+    <input type="submit" value="Delete"/>
+</form>
+</body>
+</html>
